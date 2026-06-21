@@ -1,0 +1,15 @@
+{
+  "name": "hireready-analyser",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI Resume Analyzer",
+  "main": "script.js",
+  "scripts": {
+    "start": "node api/analyze.js"
+  },
+  "author": "Harshala V",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  }
+}

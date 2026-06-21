@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeIQ Nexus</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>ResumeIQ Nexus</h1>
+
+        <div class="badge">
+            AI-Powered Resume Intelligence
+        </div>
+
+        <p class="subtitle">
+            Advanced resume intelligence platform designed to optimize ATS performance,
+            uncover skill gaps, and enhance career readiness.
+        </p>
+
+        <div class="workspace">
+
+            <!-- Resume Upload -->
+            <div class="panel">
+
+                <label>📄 Upload Resume (PDF)</label>
+
+                <input
+                    type="file"
+                    id="resumeFile"
+                    accept=".pdf"
+                    class="file-upload">
+
+                <div id="uploadStatus" class="upload-status">
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+                    <p>
+                        No Resume Uploaded
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Job Description -->
+            <div class="panel">
+
+                <label>💼 Job Description</label>
+
+                <textarea
+                    id="jobDescription"
+                    placeholder="Paste the job description here...">
+                </textarea>
+
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="buttons">
+
+            <button
+                id="analyzeBtn"
+                onclick="analyzeResume()">
+
+                🚀 Analyze Resume
+
+            </button>
+
+            <button
+                id="downloadBtn"
+                onclick="downloadReport()">
+
+                📥 Download Report
+
+            </button>
+
+        </div>
+
+        <!-- Loading -->
+
+        <div
+            id="loading"
+            style="display:none; text-align:center; margin-top:20px;">
+
+            <p>
+                🤖 Analyzing Resume...
+            </p>
+
+        </div>
+
+        <!-- Results -->
+
+        <div id="result">
+
+            <div class="section">
+
+                <h2>
+                    🎯 AI Analysis Ready
+                </h2>
+
+                <p>
+                    Upload your resume PDF and paste a job description
+                    to receive ATS scoring, skill gap analysis,
+                    improvement recommendations and career insights.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Footer Button -->
+
+        <a
+            href="https://digitalheroesco.com"
+            target="_blank"
+            class="hero-btn">
+
+            Built for Digital Heroes
+
+        </a>
+
+        <!-- Footer -->
+
+        <div class="footer">
+
+            <p>
+                <strong>Name:</strong>
+                Harshala V
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                harshalavmarakala@gmail.com
+            </p>
+
+        </div>
+
+    </div>
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Main JS -->
+<script src="script.js"></script>
+
+</body>
+</html>
