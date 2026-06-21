@@ -1,7 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
 export default async function handler(req, res) {
 
     if (req.method !== "POST") {
@@ -12,25 +10,47 @@ export default async function handler(req, res) {
 
     try {
 
-        const {
-            resumeText,
-            jobDescription
-        } = req.body;
+        // Check API Key
+        if (!process.env.GEMINI_API_KEY) {
+            console.error("GEMINI_API_KEY not found");
 
-        const model =
-            genAI.getGenerativeModel({
-                model: "gemini-2.5-flash"
+            return res.status(500).json({
+                error: "GEMINI_API_KEY not configured in Vercel"
             });
+        }
+
+        const { resumeText, jobDescription } = req.body;
+
+        // Validate Input
+        if (!resumeText || !jobDescription) {
+            return res.status(400).json({
+                error: "Resume text and Job Description are required"
+            });
+        }
+
+        const genAI = new GoogleGenerativeAI(
+            process.env.GEMINI_API_KEY
+        );
+
+        const model = genAI.getGenerativeModel({
+            model: "gemini-2.5-flash"
+        });
 
         const prompt = `
-You are a professional ATS Resume Analyzer.
+You are an expert ATS Resume Analyzer.
 
-Analyze the resume against the job description.
+Analyze the following resume against the given job description.
 
-Resume:
+====================
+RESUME
+====================
+
 ${resumeText}
 
-Job Description:
+====================
+JOB DESCRIPTION
+====================
+
 ${jobDescription}
 
 Provide:
@@ -43,7 +63,7 @@ Provide:
 6. Improvement Suggestions
 7. Recommended Career Roles
 
-Format the response professionally using headings and bullet points.
+Use clear headings and bullet points.
 `;
 
         const result =
@@ -52,23 +72,22 @@ Format the response professionally using headings and bullet points.
         const response =
             await result.response;
 
-        const text =
+        const analysis =
             response.text();
 
         return res.status(200).json({
-            analysis: text
+            success: true,
+            analysis
         });
 
     }
-
     catch (error) {
 
-        console.error(error);
+        console.error("Gemini Error:", error);
 
         return res.status(500).json({
-            error: "AI Analysis Failed"
+            success: false,
+            error: error.message || "AI Analysis Failed"
         });
-
     }
-
 }
