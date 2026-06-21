@@ -10,78 +10,68 @@ export default async function handler(req, res) {
 
     try {
 
-        // Check API Key
-        if (!process.env.GEMINI_API_KEY) {
-            console.error("GEMINI_API_KEY not found");
+        const apiKey = process.env.GEMINI_API_KEY;
 
+        if (!apiKey) {
             return res.status(500).json({
-                error: "GEMINI_API_KEY not configured in Vercel"
+                error: "GEMINI_API_KEY not found in Vercel"
             });
         }
 
         const { resumeText, jobDescription } = req.body;
 
-        // Validate Input
         if (!resumeText || !jobDescription) {
             return res.status(400).json({
                 error: "Resume text and Job Description are required"
             });
         }
 
-        const genAI = new GoogleGenerativeAI(
-            process.env.GEMINI_API_KEY
-        );
+        const genAI = new GoogleGenerativeAI(apiKey);
 
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash"
+            model: "gemini-1.5-flash"
         });
 
         const prompt = `
-You are an expert ATS Resume Analyzer.
+You are ResumeIQ Nexus, an expert ATS Resume Analyzer.
 
-Analyze the following resume against the given job description.
+Analyze the resume against the job description.
 
-====================
-RESUME
-====================
-
+Resume:
 ${resumeText}
 
-====================
-JOB DESCRIPTION
-====================
-
+Job Description:
 ${jobDescription}
 
 Provide:
 
-1. ATS Score (0-100)
-2. Resume Summary
-3. Strengths
-4. Weaknesses
-5. Missing Skills
-6. Improvement Suggestions
-7. Recommended Career Roles
+# ATS Score (0-100)
 
-Use clear headings and bullet points.
+# Resume Summary
+
+# Strengths
+
+# Weaknesses
+
+# Missing Skills
+
+# Improvement Suggestions
+
+# Recommended Career Roles
+
+Format professionally with headings and bullet points.
 `;
 
-        const result =
-            await model.generateContent(prompt);
+        const result = await model.generateContent(prompt);
 
-        const response =
-            await result.response;
-
-        const analysis =
-            response.text();
+        const analysis = result.response.text();
 
         return res.status(200).json({
             success: true,
             analysis
         });
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error("Gemini Error:", error);
 
